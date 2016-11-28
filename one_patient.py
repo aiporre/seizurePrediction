@@ -24,3 +24,6 @@ features = pr.feature(a)
 plot_one(a,1,1,'preictal')
 
 plt.show()
+
+
+
