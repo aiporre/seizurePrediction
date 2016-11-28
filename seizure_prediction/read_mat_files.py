@@ -46,6 +46,7 @@ class patient_reader:
 
     def feature(self, a):
         # TODO: obtain feature from dictionary
+        # todo: pass lambda function. much more easier
         pass
 
 
