@@ -1,4 +1,5 @@
 from seizure_prediction import read_mat_files as reader
+import seizure_prediction.fourier_tools as fourier
 import matplotlib.pyplot as plt
 import pylab, scipy , numpy
 
@@ -25,6 +26,26 @@ features = pr.feature(a)
 a = pr.read_one(train2)
 features = pr.feature(a)
 # plot_one(a,1,1,'preictal')
-plt.plot(features)
-plt.show()
 
+# plt.show()
+x_1 = a['signals']['x_1']
+t = numpy.arange(0,1,0.0025)
+x_2 = numpy.sin(2* numpy.pi * 30 * t)
+X = fourier.half_spectrogram(x_1, 400, 0.25, 0.25)
+print "easy fft"
+# [f, y] = fourier.fft_with_frequency(x_2, 0.0025)
+# plt.plot(f, numpy.absolute(y))
+# plt.draw()
+# print len(y)
+
+Y = fourier.fft_simple(x_1)
+plt.plot(numpy.absolute(Y))
+plt.draw()
+
+# plotting spectrogram
+pylab.figure()
+pylab.imshow(numpy.absolute(X.T), origin='lower', aspect='auto',
+             interpolation='nearest')
+pylab.xlabel('Time')
+pylab.ylabel('Frequency')
+pylab.show()

@@ -2,6 +2,8 @@ import scipy.io as sio
 import glob, os
 import numpy as np
 import matplotlib.pyplot as plt
+import seizure_prediction.fourier_tools as fourier
+
 class patient_reader:
 
     def __init__(self, path):
@@ -47,7 +49,13 @@ class patient_reader:
     def feature(self, a):
         # TODO: obtain feature from dictionary
         # todo: pass lambda function. much more easier
-        pass
+        time = a['signals'].pop('time')
+        fs = a['metadata']['sampling_rate']
+        # ['training', 'sequence', 'number_samples', 'channels', 'sampling_rate', 'class']
+        return np.array([
+            fourier.half_spectrogram(a['signals'][key],fs,0.05,0.05).ravel()
+            for key in a['signals'].keys()
+        ]).ravel()
 
 
 # print patient_reader("/var/local/seizureData/")

@@ -1,11 +1,12 @@
 import scipy
+import numpy as np
+from numpy import fft
 
 def spectrogram(x, fs, frame_size, next_win_displacement):
     framesamp = int(frame_size * fs) # in terms of indices
     hopsamp = int(next_win_displacement * fs) # in terms of indices
     w = scipy.hanning(framesamp) # hanning window
-    X = scipy.array([scipy.fft(w*x[i:i+framesamp])
-                     for i in range(0, len(x)-framesamp, hopsamp)])
+    X = np.array([fft.fft(w*x[i:i+framesamp])for i in range(0, len(x)-framesamp, hopsamp)])
     return X
 
 def istft(X, fs, T, next_win_displacement):
@@ -26,8 +27,27 @@ def window(y ,t , time_shift, n_points, type = 'square')  :
     return windowed_out[1,:] , windowed_out [0,:]
 
 
-def fourier_transform(y,sample_period):
-    hat_y = fft.fft(y)
+def fft_with_frequency(y, sample_period):
+    '''
+    calculates the fast fourier transform
+    :param y:
+    :param sample_period:
+    :return: frequency . transformationn
+    '''
+    hat_y = fft.fftshift(fft.fft(y)/(len(y)/2))
     frequency = fft.fftshift(fft.fftfreq(len(y),sample_period))
     return frequency, hat_y
 
+def fft_simple(x):
+    N = len(x)
+    hat_x = fft.fft(x) / (N/2)
+    return hat_x[1:N/2]
+
+def half_spectrogram(x, fs, frame_size, next_win_displacement):
+    samples_in_window = int(frame_size * fs) # in terms of indices
+    samples_to_next = int(next_win_displacement * fs) # in terms of indices
+    w = scipy.hanning(samples_in_window) # hanning window
+    X = np.array(
+        [np.absolute(fft_simple(w*x[i:i+samples_in_window]))
+         for i in range(0, len(x)-samples_in_window, samples_to_next)])
+    return X
