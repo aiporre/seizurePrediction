@@ -13,18 +13,19 @@ def plot_one(a, subject, sample, classification):
     plt.draw()
 
 
-path = "D:\DocumentsAIR\Digital_Processing_Signal\EEG_seizure_forecasting\\" + "train_1"
+path = "D:/DocumentsAIR/Digital_Processing_Signal/EEG_seizure_forecasting/train_1"
 train1 = '1_1_0.mat'
 train2 = '1_1_1.mat'
 ## --------
 pr = reader.patient_reader(path)
-a = pr.read_one(train1)
-features = pr.feature(a)
+# a = pr.read_one(train1)
+# features = pr.feature(a)
 # plot_one(a,1,1,'iterictal')
 ## --------
 a = pr.read_one(train2)
-features = pr.feature(a)
+
 # plot_one(a,1,1,'preictal')
-plt.plot(features)
-plt.show()
+# plt.plot(features)
+# plt.show()
+pr.features_to_csv()
 
