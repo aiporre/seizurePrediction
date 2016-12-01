@@ -31,7 +31,7 @@ features = pr.feature(a)
 x_1 = a['signals']['x_1']
 t = numpy.arange(0,1,0.0025)
 x_2 = numpy.sin(2* numpy.pi * 30 * t)
-X = fourier.half_spectrogram(x_1, 400, 0.25, 0.25)
+X = fourier.dynamic_spectrogram(x_1, 400, 0.25, 0.25)
 print "easy fft"
 # [f, y] = fourier.fft_with_frequency(x_2, 0.0025)
 # plt.plot(f, numpy.absolute(y))

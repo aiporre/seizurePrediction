@@ -59,7 +59,7 @@ class patient_reader:
         :return: a dict containing signals, time and metadata
         '''
         print 'reading file ' + str(file_name) + '...'
-        mat_file = self.path + '\\' + file_name
+        mat_file = self.path + '/' + file_name
         content = sio.loadmat(mat_file)
         dataStruct = content.get('dataStruct')
         val = dataStruct[0, 0]
@@ -93,7 +93,8 @@ class patient_reader:
         fs = a['metadata']['sampling_rate']
         # ['training', 'sequence', 'number_samples', 'channels', 'sampling_rate', 'class']
         features =  np.array([
-            fourier.half_spectrogram(a['signals'][key],fs,0.05,0.05).ravel()
+            # fourier.half_spectrogram(a['signals'][key],fs,0.05,0.05).ravel()
+            fourier.dynamic_spectrogram(a['signals'][key],fs,1.5,1.5,20).ravel()
             for key in a['signals'].keys()
         ]).ravel()
         return np.array([features])
@@ -108,6 +109,6 @@ if __name__ == "__main__":
     pr = patient_reader(path)
     a = pr.read_one(files[0])
     print a.keys()
-    print a['signals']['time'].shape
-    plt.plot(a['signals']['time'],a['signals']['x_1'])
+    # print a['signals']
+    plt.plot(a['time'],a['signals']['x_1'])
     plt.show()
